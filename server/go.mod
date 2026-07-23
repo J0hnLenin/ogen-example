@@ -1,4 +1,4 @@
-module ogen-example
+module github.com/J0hnLenin/ogen-example/server
 
 go 1.26.4
 
