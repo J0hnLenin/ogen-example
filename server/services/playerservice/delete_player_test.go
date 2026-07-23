@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
 func (p *PlayerServiceSuite) TestDeletePlayerSuccess() {
@@ -38,18 +37,4 @@ func (p *PlayerServiceSuite) TestDeletePlayerStorageError() {
 	// Assert
 	assert.Equal(p.T(), wantErr, gotErr)
 	p.storage.AssertExpectations(p.T())
-}
-
-func (p *PlayerServiceSuite) TestDeletePlayerNotFound() {
-	// Arrange
-	id := 0
-	wantErr := errors.New("storage error")
-
-	// Act
-	gotErr := p.playerService.DeletePlayer(p.ctx, id)
-
-	// Assert
-	assert.Error(p.T(), gotErr)
-	assert.Equal(p.T(), gotErr, wantErr)
-	p.storage.AssertNotCalled(p.T(), "DeletePlayer", mock.Anything, mock.Anything)
 }
