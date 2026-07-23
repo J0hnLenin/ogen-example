@@ -1,6 +1,6 @@
 package memstorage
 
-import "github.com/J0hnLenin/ogen-example/server/models"
+import "github.com/J0hnLenin/ogen-example/server/internal/models"
 
 type MemoryStorage struct {
 	playerMap map[int]*models.Player

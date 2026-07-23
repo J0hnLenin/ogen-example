@@ -3,7 +3,7 @@ package playerservice
 import (
 	"context"
 
-	"github.com/J0hnLenin/ogen-example/server/models"
+	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
 //go:generate mockery --name=PlayerStorage

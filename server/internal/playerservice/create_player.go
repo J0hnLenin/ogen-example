@@ -3,7 +3,7 @@ package playerservice
 import (
 	"context"
 
-	"github.com/J0hnLenin/ogen-example/server/models"
+	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
 func (p *PlayerService) CreatePlayer(ctx context.Context, name string, score float64) (*models.Player, error) {

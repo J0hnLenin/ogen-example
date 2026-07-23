@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/J0hnLenin/ogen-example/server/models"
+	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
 func (h *PlayerHandler) PatchPlayer(ctx context.Context, req *PlayerPartial, params PatchPlayerParams) (PatchPlayerRes, error) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/J0hnLenin/ogen-example/server/services/playerservice/mocks"
+	"github.com/J0hnLenin/ogen-example/server/internal/playerservice/mocks"
 	"github.com/stretchr/testify/suite"
 )
 

@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	models "github.com/J0hnLenin/ogen-example/server/models"
+	models "github.com/J0hnLenin/ogen-example/server/internal/models"
 	mock "github.com/stretchr/testify/mock"
 )
 

@@ -3,7 +3,7 @@ package memstorage
 import (
 	"context"
 
-	"github.com/J0hnLenin/ogen-example/server/models"
+	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
 func (m *MemoryStorage) GetPlayerByID(ctx context.Context, id int) (*models.Player, error) {

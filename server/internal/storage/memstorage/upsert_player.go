@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/J0hnLenin/ogen-example/server/models"
+	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
 func (m *MemoryStorage) UpsertPlayer(ctx context.Context, player *models.Player) (*models.Player, error) {
