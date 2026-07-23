@@ -6,6 +6,6 @@ import (
 	"github.com/J0hnLenin/ogen-example/server/models"
 )
 
-func UpdatePlayerScore(ctx context.Context, id int, newScore float64) (*models.Player, error) {
+func (p *PlayerService) UpdatePlayerScore(ctx context.Context, id int, newScore float64) (*models.Player, error) {
 	return nil, nil
 }

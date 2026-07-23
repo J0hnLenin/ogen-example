@@ -6,10 +6,11 @@ import (
 	"github.com/J0hnLenin/ogen-example/server/models"
 )
 
+//go:generate mockery --name=PlayerStorage
 type PlayerStorage interface {
 	GetPlayerByID(ctx context.Context, id int) (*models.Player, error)
 	GetPlayers(ctx context.Context) ([]*models.Player, error)
-	UpsertPlayer(ctx context.Context, player *models.Player) (*models.Player, error)
+	UpsertPlayer(ctx context.Context, player *models.Player) error
 	DeletePlayer(ctx context.Context, id int) error
 }
 
