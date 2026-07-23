@@ -22,15 +22,16 @@ func (p *PlayerServiceSuite) TestUpdatePlayerScoreSuccess() {
 	p.storage.On("UpsertPlayer", p.ctx, mock.MatchedBy(func(player *models.Player) bool {
 		return player.ID == id && player.Name == oldPlayer.Name && player.Score == newScore
 	})).
-		Return(nil).
+		Return(updatedPlayer, nil).
 		Once()
 
 	// Act
 	gotPlayer, err := p.playerService.UpdatePlayerScore(p.ctx, id, newScore)
 
 	// Assert
-	assert.Nil(p.T(), err)
+	assert.NoError(p.T(), err)
 	assert.Equal(p.T(), updatedPlayer, gotPlayer)
+	p.storage.AssertExpectations(p.T())
 }
 
 func (p *PlayerServiceSuite) TestUpdatePlayerScoreGetError() {
@@ -40,7 +41,7 @@ func (p *PlayerServiceSuite) TestUpdatePlayerScoreGetError() {
 	wantErr := errors.New("player not found")
 
 	p.storage.On("GetPlayerByID", p.ctx, id).
-		Return(nil, nil).
+		Return(nil, wantErr).
 		Once()
 
 	// Act
@@ -50,6 +51,7 @@ func (p *PlayerServiceSuite) TestUpdatePlayerScoreGetError() {
 	assert.Nil(p.T(), gotPlayer)
 	assert.Equal(p.T(), wantErr, gotErr)
 	p.storage.AssertNotCalled(p.T(), "UpsertPlayer", mock.Anything, mock.Anything)
+	p.storage.AssertExpectations(p.T())
 }
 
 func (p *PlayerServiceSuite) TestUpdatePlayerScoreUpsertError() {
@@ -64,7 +66,7 @@ func (p *PlayerServiceSuite) TestUpdatePlayerScoreUpsertError() {
 		Once()
 
 	p.storage.On("UpsertPlayer", p.ctx, mock.Anything).
-		Return(wantErr).
+		Return(nil, wantErr).
 		Once()
 
 	// Act
@@ -73,4 +75,5 @@ func (p *PlayerServiceSuite) TestUpdatePlayerScoreUpsertError() {
 	// Assert
 	assert.Nil(p.T(), gotPlayer)
 	assert.Equal(p.T(), wantErr, gotErr)
+	p.storage.AssertExpectations(p.T())
 }

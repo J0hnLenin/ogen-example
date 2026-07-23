@@ -93,21 +93,33 @@ func (_m *PlayerStorage) GetPlayers(ctx context.Context) ([]*models.Player, erro
 }
 
 // UpsertPlayer provides a mock function with given fields: ctx, player
-func (_m *PlayerStorage) UpsertPlayer(ctx context.Context, player *models.Player) error {
+func (_m *PlayerStorage) UpsertPlayer(ctx context.Context, player *models.Player) (*models.Player, error) {
 	ret := _m.Called(ctx, player)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpsertPlayer")
 	}
 
-	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, *models.Player) error); ok {
+	var r0 *models.Player
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *models.Player) (*models.Player, error)); ok {
+		return rf(ctx, player)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *models.Player) *models.Player); ok {
 		r0 = rf(ctx, player)
 	} else {
-		r0 = ret.Error(0)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.Player)
+		}
 	}
 
-	return r0
+	if rf, ok := ret.Get(1).(func(context.Context, *models.Player) error); ok {
+		r1 = rf(ctx, player)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // NewPlayerStorage creates a new instance of PlayerStorage. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.

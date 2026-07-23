@@ -9,7 +9,6 @@ import (
 )
 
 func (p *PlayerServiceSuite) TestUpdatePlayerNameSuccess() {
-	// Arrange
 	id := 1
 	newName := "NewAlice"
 	oldPlayer := &models.Player{ID: id, Name: "Alice", Score: 5.5}
@@ -22,38 +21,34 @@ func (p *PlayerServiceSuite) TestUpdatePlayerNameSuccess() {
 	p.storage.On("UpsertPlayer", p.ctx, mock.MatchedBy(func(player *models.Player) bool {
 		return player.ID == id && player.Name == newName && player.Score == oldPlayer.Score
 	})).
-		Return(nil).
+		Return(updatedPlayer, nil).
 		Once()
 
-	// Act
 	gotPlayer, err := p.playerService.UpdatePlayerName(p.ctx, id, newName)
 
-	// Assert
-	assert.Nil(p.T(), err)
+	assert.NoError(p.T(), err)
 	assert.Equal(p.T(), updatedPlayer, gotPlayer)
+	p.storage.AssertExpectations(p.T())
 }
 
 func (p *PlayerServiceSuite) TestUpdatePlayerNameGetError() {
-	// Arrange
 	id := 1
 	newName := "NewAlice"
 	wantErr := errors.New("player not found")
 
 	p.storage.On("GetPlayerByID", p.ctx, id).
-		Return(nil, nil).
+		Return(nil, wantErr).
 		Once()
 
-	// Act
 	gotPlayer, gotErr := p.playerService.UpdatePlayerName(p.ctx, id, newName)
 
-	// Assert
 	assert.Nil(p.T(), gotPlayer)
 	assert.Equal(p.T(), wantErr, gotErr)
 	p.storage.AssertNotCalled(p.T(), "UpsertPlayer", mock.Anything, mock.Anything)
+	p.storage.AssertExpectations(p.T())
 }
 
 func (p *PlayerServiceSuite) TestUpdatePlayerNameUpsertError() {
-	// Arrange
 	id := 1
 	newName := "NewAlice"
 	oldPlayer := &models.Player{ID: id, Name: "Alice", Score: 5.5}
@@ -64,13 +59,12 @@ func (p *PlayerServiceSuite) TestUpdatePlayerNameUpsertError() {
 		Once()
 
 	p.storage.On("UpsertPlayer", p.ctx, mock.Anything).
-		Return(wantErr).
+		Return(nil, wantErr).
 		Once()
 
-	// Act
 	gotPlayer, gotErr := p.playerService.UpdatePlayerName(p.ctx, id, newName)
 
-	// Assert
 	assert.Nil(p.T(), gotPlayer)
 	assert.Equal(p.T(), wantErr, gotErr)
+	p.storage.AssertExpectations(p.T())
 }

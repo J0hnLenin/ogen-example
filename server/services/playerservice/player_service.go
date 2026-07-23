@@ -10,7 +10,7 @@ import (
 type PlayerStorage interface {
 	GetPlayerByID(ctx context.Context, id int) (*models.Player, error)
 	GetPlayers(ctx context.Context) ([]*models.Player, error)
-	UpsertPlayer(ctx context.Context, player *models.Player) error
+	UpsertPlayer(ctx context.Context, player *models.Player) (*models.Player, error)
 	DeletePlayer(ctx context.Context, id int) error
 }
 
