@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: Player API
+  description: Простое REST API для управления игроками (CRUD)
+  version: 1.0.0
+  contact:
+    name: Support
+    email: support@example.com
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production server
+  - url: http://localhost:8080/v1
+    description: Local development
+
+paths:
+  /players:
+    get:
+      summary: Получить список всех игроков
+      operationId: getPlayers
+      tags:
+        - Players
+      responses:
+        '200':
+          description: Успешный ответ, возвращает массив игроков
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+        default:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      summary: Создать нового игрока
+      operationId: createPlayer
+      tags:
+        - Players
+      requestBody:
+        required: true
+        description: Данные нового игрока (name и score обязательны)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerInput'
+      responses:
+        '201':
+          description: Игрок успешно создан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '400':
+          description: Некорректные входные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /players/{id}:
+    get:
+      summary: Получить игрока по идентификатору
+      operationId: getPlayerById
+      tags:
+        - Players
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Числовой идентификатор игрока
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Успешный ответ, возвращает данные игрока
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Игрок с указанным id не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Полное обновление игрока (замена всех полей, кроме id)
+      operationId: updatePlayer
+      tags:
+        - Players
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Числовой идентификатор игрока
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        description: Новые значения name и score (оба обязательны)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerInput'
+      responses:
+        '200':
+          description: Игрок обновлён, возвращены обновлённые данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '400':
+          description: Некорректные входные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Игрок с указанным id не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      summary: Частичное обновление игрока (можно изменить одно или оба поля)
+      operationId: patchPlayer
+      tags:
+        - Players
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Числовой идентификатор игрока
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        description: Поля, которые необходимо обновить (хотя бы одно)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayerPartial'
+      responses:
+        '200':
+          description: Игрок обновлён, возвращены обновлённые данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '400':
+          description: Некорректные входные данные (например, пустой объект)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Игрок с указанным id не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      summary: Удалить игрока
+      operationId: deletePlayer
+      tags:
+        - Players
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Числовой идентификатор игрока
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: Игрок успешно удалён (тело ответа пустое)
+        '404':
+          description: Игрок с указанным id не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        default:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Уникальный идентификатор игрока
+          example: 42
+        name:
+          type: string
+          description: Имя игрока
+          example: "Alice"
+        score:
+          type: number
+          description: Количество очков игрока (может быть дробным)
+          example: 1250.5
+      required:
+        - id
+        - name
+        - score
+
+    PlayerInput:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Имя игрока (обязательно)
+          example: "Bob"
+        score:
+          type: number
+          description: Количество очков (обязательно)
+          example: 980
+      required:
+        - name
+        - score
+
+    PlayerPartial:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Имя игрока (опционально)
+          example: "Charlie"
+        score:
+          type: number
+          description: Количество очков (опционально)
+          example: 1200
+      minProperties: 1
+      additionalProperties: false
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Код ошибки (HTTP-статус или внутренний код)
+          example: 400
+        message:
+          type: string
+          description: Человекочитаемое описание ошибки
+          example: "Invalid request body"
+      required:
+        - code
+        - message
+
+  responses:
+    UnauthorizedError:
+      description: Ошибка аутентификации – требуется действительный токен
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

@@ -1,0 +1,10 @@
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui:latest
+    container_name: swagger-ui
+    ports:
+      - "8080:8080"
+    environment:
+      SWAGGER_JSON: /etc/swagger/openapi.yml
+    volumes:
+      - ./api/players_api/openapi.yml:/etc/swagger/openapi.yml:ro
