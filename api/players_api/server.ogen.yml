@@ -1,0 +1,8 @@
+generator:
+  features:
+    enable:
+      - paths/server
+      - webhooks/server
+      - ogen/otel
+      - ogen/unimplemented
+    disable_all: true
