@@ -20,6 +20,6 @@ type PlayerHandler struct {
 	service PlayerService
 }
 
-func NewPlayerHandler(service PlayerService) *PlayerHandler {
+func NewPlayerHandler(ctx context.Context, service PlayerService) *PlayerHandler {
 	return &PlayerHandler{service: service}
 }
