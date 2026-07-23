@@ -7,5 +7,5 @@ import (
 )
 
 func (p *PlayerService) GetPlayers(ctx context.Context) ([]*models.Player, error) {
-	return nil, nil
+	return p.storage.GetPlayers(ctx)
 }

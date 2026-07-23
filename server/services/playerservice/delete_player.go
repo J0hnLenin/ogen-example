@@ -3,5 +3,5 @@ package playerservice
 import "context"
 
 func (p *PlayerService) DeletePlayer(ctx context.Context, id int) error {
-	return nil
+	return p.storage.DeletePlayer(ctx, id)
 }
