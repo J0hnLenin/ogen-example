@@ -1,8 +1,9 @@
-package handler
+package playersserviceapi
 
 import (
 	"context"
 
+	"github.com/J0hnLenin/ogen-example/server/internal/api/playersapi"
 	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
@@ -16,10 +17,11 @@ type PlayerService interface {
 	UpdatePlayerScore(ctx context.Context, id int, newScore float64) (*models.Player, error)
 }
 
-type PlayerHandler struct {
+type PlayerServiceAPI struct {
+	playersapi.UnimplementedHandler
 	service PlayerService
 }
 
-func NewPlayerHandler(ctx context.Context, service PlayerService) *PlayerHandler {
-	return &PlayerHandler{service: service}
+func NewPlayerServiceAPI(ctx context.Context, service PlayerService) *PlayerServiceAPI {
+	return &PlayerServiceAPI{service: service}
 }

@@ -8,3 +8,13 @@ services:
       SWAGGER_JSON: /etc/swagger/openapi.yml
     volumes:
       - ./api/players_api/openapi.yml:/etc/swagger/openapi.yml:ro
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: server
+    ports:
+      - "8000:8000"
+    environment:
+      - configPath=config.yml

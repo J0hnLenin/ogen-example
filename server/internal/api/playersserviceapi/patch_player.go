@@ -1,13 +1,14 @@
-package handler
+package playersserviceapi
 
 import (
 	"context"
 	"net/http"
 
+	"github.com/J0hnLenin/ogen-example/server/internal/api/playersapi"
 	"github.com/J0hnLenin/ogen-example/server/internal/models"
 )
 
-func (h *PlayerHandler) PatchPlayer(ctx context.Context, req *PlayerPartial, params PatchPlayerParams) (PatchPlayerRes, error) {
+func (h *PlayerServiceAPI) PatchPlayer(ctx context.Context, req *playersapi.PlayerPartial, params playersapi.PatchPlayerParams) (playersapi.PatchPlayerRes, error) {
 
 	var updated *models.Player
 	var err error
@@ -19,18 +20,18 @@ func (h *PlayerHandler) PatchPlayer(ctx context.Context, req *PlayerPartial, par
 	} else if req.Score.IsSet() {
 		updated, err = h.service.UpdatePlayerScore(ctx, params.ID, req.Score.Value)
 	} else {
-		return &PatchPlayerBadRequest{
+		return &playersapi.PatchPlayerBadRequest{
 			Code:    http.StatusBadRequest,
 			Message: "no fields to update",
 		}, nil
 	}
 	if err != nil {
-		return &PatchPlayerNotFound{
+		return &playersapi.PatchPlayerNotFound{
 			Code:    http.StatusNotFound,
 			Message: err.Error(),
 		}, nil
 	}
-	return &Player{
+	return &playersapi.Player{
 		ID:    updated.ID,
 		Name:  updated.Name,
 		Score: updated.Score,
