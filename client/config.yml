@@ -1,0 +1,4 @@
+client:
+  server-url: "http://server:8000/api/v1"
+  interval: 1s
+  batch-size: 10
