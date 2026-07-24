@@ -57,6 +57,35 @@ docker compose up --build
 
 ## Использование ogen
 
+### Установка кастомного ogen
+
+Проект использует **форк** [github.com/J0hnLenin/ogen](https://github.com/J0hnLenin/ogen) с дополнительными расширениями. Перед генерацией кода необходимо собрать бинарную версию утилиты.
+
+1. Клонирование форка
+
+```bash
+git clone https://github.com/J0hnLenin/ogen
+cd ogen
+```
+
+2. Сборка бинарного файла
+
+```bash
+go build -o ogen ./cmd/ogen
+```
+
+Или установите в `$GOPATH/bin`:
+
+```bash
+go install ./cmd/ogen
+```
+
+3. Проверка
+
+```bash
+ogen --version
+```
+
 ### Внесённые изменения в ogen
 
 В проекте используется **собственный форк** ogen, в который были добавлены улучшения, необходимые для данного примера.  
