@@ -35,7 +35,9 @@ func (c *codeRecorder) Unwrap() http.ResponseWriter {
 
 // handleCreatePlayerRequest handles createPlayer operation.
 //
-// Создать нового игрока.
+// Создает одного игроков.
+//
+// Только одного.
 //
 // POST /players
 func (s *Server) handleCreatePlayerRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -343,7 +345,7 @@ func (s *Server) handleDeletePlayerRequest(args [1]string, argsEscaped bool, w h
 
 // handleGetPlayerByIdRequest handles getPlayerById operation.
 //
-// Получить игрока по идентификатору.
+// Если игрок не существует - его нельзя получить.
 //
 // GET /players/{id}
 func (s *Server) handleGetPlayerByIdRequest(args [1]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -497,7 +499,9 @@ func (s *Server) handleGetPlayerByIdRequest(args [1]string, argsEscaped bool, w 
 
 // handleGetPlayersRequest handles getPlayers operation.
 //
-// Получить список всех игроков.
+// Возвращает список игроков.
+//
+// Порядок может быть любым.
 //
 // GET /players
 func (s *Server) handleGetPlayersRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {

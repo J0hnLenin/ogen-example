@@ -10,7 +10,9 @@ import (
 type Handler interface {
 	// CreatePlayer implements createPlayer operation.
 	//
-	// Создать нового игрока.
+	// Создает одного игроков.
+	//
+	// Только одного.
 	//
 	// POST /players
 	CreatePlayer(ctx context.Context, req *PlayerInput) (CreatePlayerRes, error)
@@ -22,13 +24,15 @@ type Handler interface {
 	DeletePlayer(ctx context.Context, params DeletePlayerParams) (DeletePlayerRes, error)
 	// GetPlayerById implements getPlayerById operation.
 	//
-	// Получить игрока по идентификатору.
+	// Если игрок не существует - его нельзя получить.
 	//
 	// GET /players/{id}
 	GetPlayerById(ctx context.Context, params GetPlayerByIdParams) (GetPlayerByIdRes, error)
 	// GetPlayers implements getPlayers operation.
 	//
-	// Получить список всех игроков.
+	// Возвращает список игроков.
+	//
+	// Порядок может быть любым.
 	//
 	// GET /players
 	GetPlayers(ctx context.Context) ([]Player, error)

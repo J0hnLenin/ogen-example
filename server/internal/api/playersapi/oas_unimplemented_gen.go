@@ -15,7 +15,9 @@ var _ Handler = UnimplementedHandler{}
 
 // CreatePlayer implements createPlayer operation.
 //
-// Создать нового игрока.
+// Создает одного игроков.
+//
+// Только одного.
 //
 // POST /players
 func (UnimplementedHandler) CreatePlayer(ctx context.Context, req *PlayerInput) (r CreatePlayerRes, _ error) {
@@ -33,7 +35,7 @@ func (UnimplementedHandler) DeletePlayer(ctx context.Context, params DeletePlaye
 
 // GetPlayerById implements getPlayerById operation.
 //
-// Получить игрока по идентификатору.
+// Если игрок не существует - его нельзя получить.
 //
 // GET /players/{id}
 func (UnimplementedHandler) GetPlayerById(ctx context.Context, params GetPlayerByIdParams) (r GetPlayerByIdRes, _ error) {
@@ -42,7 +44,9 @@ func (UnimplementedHandler) GetPlayerById(ctx context.Context, params GetPlayerB
 
 // GetPlayers implements getPlayers operation.
 //
-// Получить список всех игроков.
+// Возвращает список игроков.
+//
+// Порядок может быть любым.
 //
 // GET /players
 func (UnimplementedHandler) GetPlayers(ctx context.Context) (r []Player, _ error) {

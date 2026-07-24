@@ -89,7 +89,9 @@ func trimTrailingSlashes(u *url.URL) {
 type Invoker interface {
 	// CreatePlayer invokes createPlayer operation.
 	//
-	// Создать нового игрока.
+	// Создает одного игроков.
+	//
+	// Только одного.
 	//
 	// POST /players
 	CreatePlayer(ctx context.Context, request *PlayerInput, options ...RequestOption) (CreatePlayerRes, error)
@@ -101,13 +103,15 @@ type Invoker interface {
 	DeletePlayer(ctx context.Context, params DeletePlayerParams, options ...RequestOption) (DeletePlayerRes, error)
 	// GetPlayerById invokes getPlayerById operation.
 	//
-	// Получить игрока по идентификатору.
+	// Если игрок не существует - его нельзя получить.
 	//
 	// GET /players/{id}
 	GetPlayerById(ctx context.Context, params GetPlayerByIdParams, options ...RequestOption) (GetPlayerByIdRes, error)
 	// GetPlayers invokes getPlayers operation.
 	//
-	// Получить список всех игроков.
+	// Возвращает список игроков.
+	//
+	// Порядок может быть любым.
 	//
 	// GET /players
 	GetPlayers(ctx context.Context, options ...RequestOption) ([]Player, error)
@@ -169,7 +173,9 @@ func (c *Client) onResponse(ctx context.Context, resp *http.Response) error {
 
 // CreatePlayer invokes createPlayer operation.
 //
-// Создать нового игрока.
+// Создает одного игроков.
+//
+// Только одного.
 //
 // POST /players
 func (c *Client) CreatePlayer(ctx context.Context, request *PlayerInput, options ...RequestOption) (CreatePlayerRes, error) {
@@ -402,7 +408,7 @@ func (c *Client) sendDeletePlayer(ctx context.Context, params DeletePlayerParams
 
 // GetPlayerById invokes getPlayerById operation.
 //
-// Получить игрока по идентификатору.
+// Если игрок не существует - его нельзя получить.
 //
 // GET /players/{id}
 func (c *Client) GetPlayerById(ctx context.Context, params GetPlayerByIdParams, options ...RequestOption) (GetPlayerByIdRes, error) {
@@ -526,7 +532,9 @@ func (c *Client) sendGetPlayerById(ctx context.Context, params GetPlayerByIdPara
 
 // GetPlayers invokes getPlayers operation.
 //
-// Получить список всех игроков.
+// Возвращает список игроков.
+//
+// Порядок может быть любым.
 //
 // GET /players
 func (c *Client) GetPlayers(ctx context.Context, options ...RequestOption) ([]Player, error) {
