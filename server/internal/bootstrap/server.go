@@ -1,24 +1,28 @@
 package bootstrap
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/J0hnLenin/ogen-example/server/config"
 	"github.com/J0hnLenin/ogen-example/server/internal/api/playersapi"
 	"github.com/J0hnLenin/ogen-example/server/internal/api/playersserviceapi"
 	"github.com/rs/cors"
 )
 
-func AppRun(api *playersserviceapi.PlayerServiceAPI) {
+func AppRun(cfg config.ServerConfig, api *playersserviceapi.PlayerServiceAPI) {
 
 	srv, err := playersapi.NewServer(api)
 	if err != nil {
-		log.Fatalf("не удалось создать сервер: %v", err)
+		log.Fatalf("Can't create server: %v", err)
 	}
 
-	addr := "0.0.0.0:8000"
+	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
+	pattern := fmt.Sprintf("%s/", cfg.APIEndpoint)
+
 	mux := http.NewServeMux()
-	mux.Handle("/api/v1/", http.StripPrefix("/api/v1", srv))
+	mux.Handle(pattern, http.StripPrefix(cfg.APIEndpoint, srv))
 
 	cors := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:8080", "http://127.0.0.1:8080"},
@@ -28,8 +32,8 @@ func AppRun(api *playersserviceapi.PlayerServiceAPI) {
 		Debug:            true,
 	})
 
-	log.Printf("сервер запущен на %s", addr)
+	log.Printf("Server listen: %s", addr)
 	if err := http.ListenAndServe(addr, cors.Handler(mux)); err != nil {
-		log.Fatalf("ошибка работы сервера: %v", err)
+		log.Fatalf("Server error: %v", err)
 	}
 }
